@@ -3,17 +3,6 @@ from urllib.parse import parse_qs
 import re
 
 class QueryValidationMiddleware:
-    """
-    Validates common query params:
-      - page: positive int (>=1)
-      - limit: positive int (1..100)
-      - ordering: safe comma-separated fields (letters, underscore, hyphen)
-      - start_date/end_date: YYYY-MM-DD format if present
-      - author: length cap (<=1000) to avoid abuse
-      - search: length cap (<=1000)
-    Returns 400 JSON on invalid input before hitting the view.
-    """
-
     DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
     ORDER_RE = re.compile(r"^[-a-zA-Z0-9_,.]+$") 
 
@@ -63,3 +52,4 @@ class QueryValidationMiddleware:
                     return bad(f"`{key}` too long.")
 
         return self.get_response(request)
+
